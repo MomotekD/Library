@@ -79,7 +79,6 @@ function showBooks(){
         removeButton.addEventListener('click', (e) => {
             e.preventDefault;
             const index = Books.findIndex(bookItem => bookItem.id === book.id);
-            console.log(index)
             if(index !== -1){
             Books.splice(index, 1);
             showBooks();
