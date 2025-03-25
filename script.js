@@ -1,25 +1,49 @@
 const Books = [];
 const gridContainer = document.querySelector('.gridContainer')
 
-function Book(title, author, pages, read) {
-    this.id = crypto.randomUUID();
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
+class Book{
+    constructor(title, author, pages, read){
+        this.id = crypto.randomUUID();
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
 
-    Books.push(this);
+        if (Object.hasOwn(this, "_pages")) {
+            Books.push(this);
+        }
+    }
+
+    set pages(newPages){
+        if(newPages > 0){
+            this._pages = newPages;
+        }else{
+            console.error('Number of pages must be a positive number.');
+            return
+        }
+    }
+
+    set read(newRead){
+        this._read = newRead;
+    }
+
+    get pages(){
+        return this._pages;
+    }
+
+    get read(){
+        return this._read;
+    }
 }
 
 const LOTR = new Book('The Lord of the Rings', 'J.R.R. Tolkien', 1178, true);
-
 const Hobbit = new Book('The Hobbit', 'J.R.R. Tolkien', 295, false);
 
 document.querySelector('.bookForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const title = document.querySelector('#bookTitle').value;
     const author = document.querySelector('#bookAuthor').value;
-    const pages = document.querySelector('#bookPages').value;
+    const pages = Number(document.querySelector('#bookPages').value);
     const read = document.querySelector('#bookRead').checked;
     
     const book = new Book(title, author, pages, read);
@@ -63,7 +87,7 @@ function showBooks(){
         wasRead.setAttribute("type", "checkbox");
         bookCardText.appendChild(wasRead);
         wasRead.addEventListener('change', (e) => {
-            e.preventDefault;
+            e.preventDefault();
             book.read = e.target.checked;
         });
 
